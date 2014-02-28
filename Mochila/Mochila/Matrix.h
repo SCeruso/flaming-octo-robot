@@ -34,12 +34,8 @@ public:
 	void write(std::ostream& os);		// Mostrar la matriz
 	void read(std::istream& is);		// Mostrar la matriz
 	Matrix_t<it_t>& operator= (const Matrix_t <it_t> &);
-	Matrix_t<it_t>& operator+ (const Matrix_t <it_t> &) const; //*this+M
-	Matrix_t<it_t>& operator- (const Matrix_t <it_t> &) const;
-
-
-	Matrix_t<it_t>& sumar ( Matrix_t <it_t> &) ;
-
+	Matrix_t<it_t> operator+ (const Matrix_t <it_t> &)const; //*this+M
+	Matrix_t<it_t> operator- (const Matrix_t <it_t> &) const;
 
 	bool operator!= (const Matrix_t <it_t> &) const;
 	bool operator== (const Matrix_t <it_t> &) const;
@@ -53,12 +49,11 @@ private:
 	// eliminando la fila i y la columna j
 	// de la matriz llamante
 public:
-	double determinante(int &c);
+	it_t determinante(int &c);
 
 };
 
 template <class it_t> Matrix_t<it_t>::Matrix_t(void) : base_(NULL), m_(0), n_(0) {}
-
 template <class it_t> Matrix_t <it_t>::Matrix_t(sz_t m, sz_t n) : base_(NULL), m_(m), n_(n)
 {
 	buildMatrix();
@@ -74,19 +69,17 @@ template <class it_t> Matrix_t <it_t> :: ~Matrix_t(void)
 {
 	removeMatrix();
 }
-
 template <class it_t> void Matrix_t <it_t> ::buildMatrix(void)
 {
 	try {
 		base_ = new it_t[m_*n_];//Crea un vector de m*n elementos
 	}
 	
-	catch (std::bad_alloc){
-		std::cerr << "Error creando matriz." << std::endl;
+	catch (std::bad_alloc &){
+		std::cerr << "Error creando matriz." <<std::endl;
 		throw;
 	}
 }
-
 template <class it_t> void Matrix_t <it_t> ::removeMatrix(void)
 {
 	if (base_ != NULL){
@@ -97,7 +90,6 @@ template <class it_t> void Matrix_t <it_t> ::removeMatrix(void)
 	m_ = 0;
 	n_ = 0;
 }
-
 template <class it_t> it_t& Matrix_t <it_t> ::elemento(ix_t i, ix_t j)
 {
 	if ((i<1) || (i>nfilas()) || (j<1) || (j>ncolumnas())){
@@ -114,17 +106,14 @@ template <class it_t> it_t& Matrix_t <it_t> ::elemento(ix_t i, ix_t j) const
 	}
 	return base_[(i - 1)*n_ + j - 1];
 }
-
 template <class it_t> sz_t Matrix_t <it_t> ::nfilas(void) const
 {
 	return m_;
 }
-
 template <class it_t> sz_t Matrix_t <it_t> ::ncolumnas(void) const
 {
 	return n_;
 }
-
 template <class it_t> void Matrix_t <it_t> ::read(std::istream& is)
 {
 	int m, n;
@@ -140,14 +129,13 @@ template <class it_t> void Matrix_t <it_t> ::read(std::istream& is)
 		is >> base_[i];
 
 }
-
 template <class it_t> void Matrix_t <it_t> ::write(std::ostream& os)
 {
 	char aux[80];
 
 	//sprintf(aux, " %10d  %10d ", m_, n_);
 //	os << aux << endl;
-
+	
 	for (int i = 1; i <= m_; i++){
 		for (int j = 1; j <= n_; j++){
 			//sprintf(aux, " %10.6lf ", elemento(i, j));
@@ -156,12 +144,9 @@ template <class it_t> void Matrix_t <it_t> ::write(std::ostream& os)
 		os << endl;
 	}
 }
-
-template <class it_t> int Matrix_t <it_t> ::signo(ix_t i, ix_t j)
-{
+template <class it_t> int Matrix_t <it_t> ::signo(ix_t i, ix_t j){
 	return pow(-1, (i + j));
 }
-
 template <class it_t> void Matrix_t <it_t> ::subMatriz(ix_t i, ix_t j, Matrix_t& SM)
 {
 
@@ -182,10 +167,9 @@ template <class it_t> void Matrix_t <it_t> ::subMatriz(ix_t i, ix_t j, Matrix_t&
 		}
 	}
 }
-
-template <class it_t> double Matrix_t <it_t> ::determinante(int &c)
+template <class it_t> it_t Matrix_t <it_t> ::determinante(int &c)
 {
-	double det = 0;
+	it_t det = 0;
 	int i, j;
 
 	if (n_ + m_ == 2) {
@@ -202,11 +186,10 @@ template <class it_t> double Matrix_t <it_t> ::determinante(int &c)
 
 	return det;
 }
-
-template <class it_t> Matrix_t <it_t> &   Matrix_t <it_t> ::operator+ (const Matrix_t <it_t> & M) const {
+template <class it_t> Matrix_t <it_t> Matrix_t <it_t> ::operator+ (const Matrix_t <it_t> & M) const  {
 	
 	Matrix_t <it_t> suma(m_,n_);
-	
+
 	if (m_ != M.m_ || n_ != M.n_) {
 		std::cerr << "No es posible sumar matrices" << endl;
 		throw 3;
@@ -220,19 +203,19 @@ template <class it_t> Matrix_t <it_t> &   Matrix_t <it_t> ::operator+ (const Mat
 	}
 	return suma;
 }
-
-template <class it_t> Matrix_t <it_t> &   Matrix_t <it_t> ::operator= (const Matrix_t <it_t> & M) {
-
+template <class it_t> Matrix_t <it_t> &   Matrix_t <it_t> ::operator = (const Matrix_t <it_t> & M) {
+	
 	removeMatrix();
 	m_ = M.m_;
 	n_ = M.n_;
 	buildMatrix();
-	for (int i = 0; i < n_*m_; i++)
-		base_[i] = M.base_[i];
+	
+	for (int i = 1; i <= m_; i++)
+		for (int j = 1; j<=n_; j++)
+			elemento(i,j) = M.elemento(i,j);
 	return *this;
 }
-
-template <class it_t> Matrix_t <it_t> &   Matrix_t <it_t> ::operator- (const Matrix_t <it_t> & M) const {
+template <class it_t> Matrix_t <it_t> Matrix_t <it_t> ::operator - (const Matrix_t <it_t> & M) const {
 	Matrix_t <it_t> resta(m_, n_);
 
 	if (m_ != M.m_ || n_ != M.n_) {
@@ -249,7 +232,6 @@ template <class it_t> Matrix_t <it_t> &   Matrix_t <it_t> ::operator- (const Mat
 	return resta;
 
 }
-
 template <class it_t> bool  Matrix_t <it_t> ::operator== (const Matrix_t <it_t> & M) const {
 	bool igual = true;
 	if (m_ != M.m_ || n_ != M.n_) {
@@ -267,7 +249,6 @@ template <class it_t> bool  Matrix_t <it_t> ::operator== (const Matrix_t <it_t> 
 	return igual;
 
 }
-
 template <class it_t> bool  Matrix_t <it_t> ::operator!= (const Matrix_t <it_t> & M) const {
 	bool igual = true;
 	if (m_ != M.m_ || n_ != M.n_) {
@@ -284,24 +265,4 @@ template <class it_t> bool  Matrix_t <it_t> ::operator!= (const Matrix_t <it_t> 
 	}
 	return (!igual);
 
-}
-
-
-template <class it_t> Matrix_t <it_t> &   Matrix_t <it_t> ::sumar ( Matrix_t <it_t> & M)  {
-
-	Matrix_t <it_t> suma;
-
-	/*if (m_ != M.m_ || n_ != M.n_) {
-		std::cerr << "No es posible sumar matrices" << endl;
-		throw 3;
-	}
-	else{
-		for (int i = 1; i <= m_; i++) {
-			for (int j = 1; j <= n_; j++) {
-				elemento(i, j) = elemento(i, j) + M.elemento(i, j);
-			}
-		}
-	}*/
-	cout << "sumando" <<m_<< endl;
-	return suma;
 }
