@@ -6,35 +6,36 @@
 
 using namespace std;
 
-typedef unsigned int 	sz_t;		// Tipo del tamaño
-typedef unsigned int 	ix_t;		// Tipo del índice
+typedef unsigned int 	sz_t;											// Tipo del tamaño
+typedef unsigned int 	ix_t;											// Tipo del índice
 
 
 template <class it_t> class Matrix_t{
 private:
-	it_t*    	base_;				// Vector que contiene los elementos de la matriz
-	sz_t 		m_;					// Número de filas
-	sz_t 		n_;					// Número de columna
+	it_t*    	base_;													// Vector que contiene los elementos de la matriz
+	sz_t 		m_;														// Número de filas
+	sz_t 		n_;														// Número de columna
 
 private:
-	void buildMatrix(void);			// Reserva Memoria
-	void removeMatrix(void);		// Libera Memoria
+	void buildMatrix(void);												// Reserva Memoria
+	void removeMatrix(void);											// Libera Memoria
 
 public:
-	Matrix_t(sz_t m, sz_t n);			// Constructor
-	Matrix_t(void);						// Constructor por defecto
-	Matrix_t(const Matrix_t&);			//Constructor de copia
-	virtual ~Matrix_t(void);			// Destructor
+	Matrix_t(sz_t m, sz_t n);											// Constructor
+	Matrix_t(void);														// Constructor por defecto
+	Matrix_t(const Matrix_t&);											//Constructor de copia
+	virtual ~Matrix_t(void);											// Destructor
 
-	it_t& elemento(ix_t i, ix_t j);		// Acceso al elemento (i,j)
+	it_t& elemento(ix_t i, ix_t j);										// Acceso al elemento (i,j)
 	it_t& elemento(ix_t i, ix_t j) const;
-	sz_t  nfilas(void) const;					// Devuelve el número de filas
-	sz_t  ncolumnas(void) const;				// Devuelve el número de columna
+	sz_t  nfilas(void) const;											// Devuelve el número de filas
+	sz_t  ncolumnas(void) const;										// Devuelve el número de columna
 
-	void write(std::ostream& os);		// Mostrar la matriz
-	void read(std::istream& is);		// Mostrar la matriz
+	void write(std::ostream& os);										// Mostrar la matriz
+	void read(std::istream& is);										// Mostrar la matriz
+
 	Matrix_t<it_t>& operator= (const Matrix_t <it_t> &);
-	Matrix_t<it_t> operator+ (const Matrix_t <it_t> &)const; //*this+M
+	Matrix_t<it_t> operator+ (const Matrix_t <it_t> &)const;			//*this+M
 	Matrix_t<it_t> operator- (const Matrix_t <it_t> &) const;
 
 	bool operator!= (const Matrix_t <it_t> &) const;
@@ -43,11 +44,11 @@ public:
 	// ESTOS Métodos son para el cálculo del determinante !!!!                   //
 	//---------------------------------------------------------------------------//
 private:
-	int  signo(ix_t i, ix_t j);			// Devuelve (-1)^(i+j)
+	int  signo(ix_t i, ix_t j);						// Devuelve (-1)^(i+j)
 
 	void subMatriz(ix_t i, ix_t j, Matrix_t& SM);	// Construye una submatrix
-	// eliminando la fila i y la columna j
-	// de la matriz llamante
+													// eliminando la fila i y la columna j
+													// de la matriz llamante
 public:
 	it_t determinante(int &c);
 

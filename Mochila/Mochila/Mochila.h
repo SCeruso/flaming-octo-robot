@@ -2,6 +2,7 @@
 #include<iostream>
 #include<math.h>
 #include<stdio.h>
+using namespace std;
 
 typedef unsigned it_t; 				//Tipo de elemento de la tabla
 

@@ -44,20 +44,20 @@ void Mochila_t::write(std::ostream& os)
 {
 	char aux[80];
 
-	sprintf(aux, "%12s", "(Valor, Peso)/Capacidad");
-	os << aux;
+	os << "(Valor, Peso)/Capacidad";
+	//os << aux;
 	for (int k = 0; k <= Cap_; k++){
-		sprintf(aux, " %4d ", k);
-		os << aux;
+		//sprintf(aux, " %4d ", k);
+		os << "    " << k;
 	}
 
 	os << std::endl;
 	for (int i = 0; i<n_; i++){
-		sprintf(aux, "(%8d, %8d)  |", N_[i].v, N_[i].w);
-		os << aux;
+	//	sprintf(aux, "(%8d, %8d)  |", N_[i].v, N_[i].w);
+		os << "(        ," << N_[i].v << "       " << N_[i].w;
 		for (int j = 0; j <= Cap_; j++){
-			sprintf(aux, " %4d ", elemento(i, j));
-			os << aux;
+			//sprintf(aux, " %4d ", elemento(i, j));
+			os << "    " << elemento(i, j);
 		}
 		os << std::endl;
 	}
