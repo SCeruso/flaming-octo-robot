@@ -36,13 +36,25 @@ void DP_Method::runSearch(){
 		Tab_.elemento(i+1, 1).set_score(0); //Toda la primera columna a 0
 
 		for (j = 1; j <= problem_.get_Cap(); j++) {
-			if (j <= problem_.elemento(i).w && i != 0)	//Si no es posible colocar otro elemento, toma el valor del elemento anterior
+			if (j < problem_.elemento(i).w && i != 0)	//Si no es posible colocar otro elemento, toma el valor del elemento anterior
 				Tab_.elemento(i + 1, j + 1).set_score(Tab_.elemento(i, j+1).get_score());
-			else if (i != 0) //Calcula el valor máximo entre colocar o no otro elemento en caso que fuera posible colocar
-				Tab_.elemento(i + 1, j + 1).set_score(fmax(Tab_.elemento(i, j+1).get_score(), problem_.elemento(i).v + Tab_.elemento(i, (j+1 - problem_.elemento(i).w)).get_score()));
+			else if (i != 0){ //Calcula el valor máximo entre colocar o no otro elemento en caso que fuera posible colocar
+				if (Tab_.elemento(i, j + 1).get_score() > problem_.elemento(i).v + Tab_.elemento(i, (j + 1 - problem_.elemento(i).w)).get_score()) {
+					//Tab_.elemento(i + 1, j + 1).set_score(fmax(Tab_.elemento(i, j + 1).get_score(), problem_.elemento(i).v + Tab_.elemento(i, (j + 1 - problem_.elemento(i).w)).get_score()));
+					Tab_.elemento(i + 1, j + 1).set_score(Tab_.elemento(i, j + 1).get_score());
+				}
+				else {
+					Tab_.elemento(i + 1, j + 1).set_score(problem_.elemento(i).v + Tab_.elemento(i, (j + 1 - problem_.elemento(i).w)).get_score());
+				}
+			}
 		}
 	}
-
+	Knapsack_Solution so = Tab_.elemento(problem_.get_n(), problem_.get_Cap() + 1);
+	//Bit_set a(5);
+	//a.insertar(2);
+	//so.set_set(a);
 	cout << "VALOR MAXIMO" << endl;
 	cout << Tab_.elemento(problem_.get_n(), problem_.get_Cap() + 1).get_score() << endl;
+	cout << Tab_.elemento(problem_.get_n(), problem_.get_Cap() + 1) << endl;
+	cout << so << endl;
 }

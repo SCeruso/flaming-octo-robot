@@ -1,7 +1,7 @@
 #include "Bit_set.h"
 
 
-Bit_set::Bit_set(void) {}
+Bit_set::Bit_set(void): size_(0) {}
 
 Bit_set::Bit_set(size_t size)  {
 
@@ -132,4 +132,7 @@ bool Bit_set::estado(int i) {
 	return e;
 
 
+}
+size_t Bit_set::get_size() {
+	return size_;
 }

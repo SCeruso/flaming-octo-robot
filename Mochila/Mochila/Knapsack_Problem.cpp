@@ -46,3 +46,4 @@ void Knapsack_Problem::read(std::istream& is) {
 		is >> N_[i].v;
 	}
 }
+

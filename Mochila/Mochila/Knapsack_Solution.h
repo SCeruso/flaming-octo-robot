@@ -13,5 +13,6 @@ public:
 	bool elemento(int);
 	Bit_set get_set();
 	void set_set(Bit_set);
+	friend ostream& operator << (ostream&, Knapsack_Solution);
 };
 

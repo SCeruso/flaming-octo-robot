@@ -16,3 +16,18 @@ Bit_set Knapsack_Solution::get_set() {
 void Knapsack_Solution::set_set(Bit_set set) {
 	set_ = set;
 }
+
+ostream& operator << (ostream& os, Knapsack_Solution sol) {
+	int i;
+	Bit_set dummy = sol.get_set();
+
+	os << "(";
+	for (i = 0; i < dummy.get_size(); i++)
+		if (dummy.estado(i))
+			os << i;
+	for (int j = i; i < dummy.get_size(); j++)
+		if (dummy.estado(j))
+			os << ", " << j;
+		os << ") score: " << sol.get_score();
+		return os;
+}

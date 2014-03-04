@@ -23,5 +23,6 @@ public:
 	//int pop_ultimo(void);
 	int cardinal(void);
 	bool estado(int i);//true si "i" contenido en block_
+	size_t get_size();
 };
 
