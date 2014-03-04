@@ -1,15 +1,15 @@
 #include "SolutionMethod.h"
 
 
-SolutionMethod::SolutionMethod() : bestSolution_(), problem_(NULL), iteration_(0), iterationOfBestSolution_(0), 
+SolutionMethod::SolutionMethod() : iteration_(0), iterationOfBestSolution_(0), 
 elapsedTime_(0), elapsedTimeOfBestSolution_(0), stopCriterion_() {}
 
 
 SolutionMethod::~SolutionMethod(){}
 
-Solution& SolutionMethod::getBestSolution() { return *bestSolution_; }
+//Solution& SolutionMethod::getBestSolution() { return *bestSolution_; }
 
-Problem& SolutionMethod::getProblem() { return *problem_; }
+//Problem& SolutionMethod::getProblem() { return *problem_; }
 
 int SolutionMethod::getIteration() { return iteration_; }
 
@@ -23,9 +23,9 @@ StopCriterion SolutionMethod::getStopCriterion() { return stopCriterion_; }
 
 void SolutionMethod::setStopCriterion(StopCriterion criterion) { stopCriterion_ = criterion; }
 
-void SolutionMethod::setBestSolution(Solution& solution) { bestSolution_ = &solution; }
+//void SolutionMethod::setBestSolution(Solution& solution) { bestSolution_ = &solution; }
 
-void SolutionMethod::setProblem(Problem& problem) { problem_= &problem; }
+//void SolutionMethod::setProblem(Problem& problem) { problem_= &problem; }
 
 void SolutionMethod::resetIteration() { iteration_ = 0; }
 

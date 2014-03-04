@@ -16,11 +16,12 @@ private:
 	sz_t 		m_;														// Número de filas
 	sz_t 		n_;														// Número de columna
 
-private:
-	void buildMatrix(void);												// Reserva Memoria
+public:
+
+	void buildMatrix(void);	
+	void buildMatrix(sz_t, sz_t);										// Reserva Memoria
 	void removeMatrix(void);											// Libera Memoria
 
-public:
 	Matrix_t(sz_t m, sz_t n);											// Constructor
 	Matrix_t(void);														// Constructor por defecto
 	Matrix_t(const Matrix_t&);											//Constructor de copia
@@ -78,6 +79,20 @@ template <class it_t> void Matrix_t <it_t> ::buildMatrix(void)
 	
 	catch (std::bad_alloc &){
 		std::cerr << "Error creando matriz." <<std::endl;
+		throw;
+	}
+}
+template <class it_t> void Matrix_t <it_t> ::buildMatrix(sz_t m, sz_t n) 
+{	
+	m_ = m;
+	n_ = n;
+
+	try {
+		base_ = new it_t[m_*n_];//Crea un vector de m*n elementos
+	}
+
+	catch (std::bad_alloc &){
+		std::cerr << "Error creando matriz." << std::endl;
 		throw;
 	}
 }

@@ -1,15 +1,17 @@
 #pragma once
 #include "Solution.h"
+#include "Bit_set.h"
 
 class Knapsack_Solution :
 	public Solution
 {
 private:
-	int n_;
-	int* item_;	//Conjunto solución
+	Bit_set set_;	//Conjunto solución
 public:
-	Knapsack_Solution(int);
+	Knapsack_Solution();
 	~Knapsack_Solution();
-	int& elemento(int);
+	bool elemento(int);
+	Bit_set get_set();
+	void set_set(Bit_set);
 };
 

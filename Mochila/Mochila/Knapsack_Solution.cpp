@@ -1,21 +1,18 @@
 #include "Knapsack_Solution.h"
 
 
-Knapsack_Solution::Knapsack_Solution(int n) : Solution(), n_(n)
-{
-	item_ = new int[n_];
+Knapsack_Solution::Knapsack_Solution() : Solution(), set_(){}
+
+
+Knapsack_Solution::~Knapsack_Solution() {}
+
+bool Knapsack_Solution::elemento(int i) {
+	return set_.estado(i);
 }
 
-
-Knapsack_Solution::~Knapsack_Solution()
-{
-	delete item_;
+Bit_set Knapsack_Solution::get_set() {
+	return set_;
 }
-
-int& Knapsack_Solution::elemento(int i) {
-
-	if (i < 0 || i >= n_)
-		throw 10;
-	else
-		return item_[i];
+void Knapsack_Solution::set_set(Bit_set set) {
+	set_ = set;
 }

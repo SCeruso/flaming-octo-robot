@@ -13,6 +13,6 @@ public:
 	void setIsMaxProblem(bool);
 	bool areEqual(Solution&, Solution&);
 	bool firstSolutionIsBetter(Solution&, Solution&);
-	virtual double evaluate(Solution&) = 0;
+	virtual double evaluate(Solution&) { return 0; };
 };
 
