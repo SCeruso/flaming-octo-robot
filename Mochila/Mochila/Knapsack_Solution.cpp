@@ -23,11 +23,15 @@ ostream& operator << (ostream& os, Knapsack_Solution sol) {
 
 	os << "(";
 	for (i = 0; i < dummy.get_size(); i++)
-		if (dummy.estado(i))
+		if (dummy.estado(i)) {
 			os << i;
-	for (int j = i; i < dummy.get_size(); j++)
-		if (dummy.estado(j))
-			os << ", " << j;
+			break;
+		}
+		i++;
+		for (; i < dummy.get_size(); i++) {
+			if (dummy.estado(i))
+				os << ", " << i;
+		}
 		os << ") score: " << sol.get_score();
 		return os;
 }

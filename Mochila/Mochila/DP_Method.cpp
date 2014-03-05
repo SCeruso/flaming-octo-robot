@@ -22,12 +22,16 @@ void DP_Method::runSearch(){
 	Bit_set dummy(problem_.get_n());
 	int i, j;
 
+	setIteration(0);
 	Tab_.removeMatrix();
 	Tab_.buildMatrix(problem_.get_n(), problem_.get_Cap() + 1);
 
 	for (j = 0; j <= problem_.get_Cap(); j++) { //Inicializa la toda la primera fila a su valor con el que finalizará
-		if (j<problem_.elemento(0).w)
+		increaseIteration();
+		if (j < problem_.elemento(0).w) {
 			Tab_.elemento(1, j + 1).set_score(0);
+			Tab_.elemento(1, j + 1).set_set(dummy);
+		}
 		else{
 			Tab_.elemento(1, j + 1).set_score(problem_.elemento(0).v);	
 			dummy.insertar(0);
@@ -38,6 +42,8 @@ void DP_Method::runSearch(){
 
 	
 	for (i = 0; i< problem_.get_n(); i++) {
+
+		increaseIteration();
 		Tab_.elemento(i + 1, 1).set_score(0); //Toda la primera columna a 0
 		Tab_.elemento(i + 1, 1).set_set(dummy);//Todos los conjuntos a nulo
 		for (j = 1; j <= problem_.get_Cap(); j++) {
@@ -57,16 +63,16 @@ void DP_Method::runSearch(){
 					dummy = Tab_.elemento(i, (j + 1 - problem_.elemento(i).w)).get_set();
 					dummy.insertar(i);
 					Tab_.elemento(i + 1, j + 1).set_set(dummy);
+				//	dummy.remover(i);
 				}
 			}
 		}
 	}
-	Knapsack_Solution so = Tab_.elemento(problem_.get_n(), problem_.get_Cap() + 1);
-	//Bit_set a(5);
-	//a.insertar(2);
-	//so.set_set(a);
-	cout << "VALOR MAXIMO" << endl;
-	//cout << Tab_.elemento(problem_.get_n(), problem_.get_Cap() + 1).get_score() << endl;
-	//cout << Tab_.elemento(problem_.get_n(), problem_.get_Cap() + 1) << endl;
-	cout << so << endl;
+
+	bestSolution_ = Tab_.elemento(problem_.get_n(), problem_.get_Cap() + 1);
+
+	setIterationOfBestSolution(getIteration());
+
+	cout << bestSolution_ << endl;
+	cout << "ITERACION" << getIterationOfBestSolution() << endl;
 }
