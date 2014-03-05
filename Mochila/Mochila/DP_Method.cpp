@@ -43,16 +43,21 @@ void DP_Method::runSearch(){
 	
 	for (i = 0; i< problem_.get_n(); i++) {
 
-		increaseIteration();
 		Tab_.elemento(i + 1, 1).set_score(0); //Toda la primera columna a 0
 		Tab_.elemento(i + 1, 1).set_set(dummy);//Todos los conjuntos a nulo
+
 		for (j = 1; j <= problem_.get_Cap(); j++) {
+
+			increaseIteration();
+
 			if (j < problem_.elemento(i).w && i != 0){	//Si no es posible colocar otro elemento, toma el valor del elemento anterior
 				Tab_.elemento(i + 1, j + 1).set_score(Tab_.elemento(i, j + 1).get_score());
 				dummy = Tab_.elemento(i, j + 1).get_set();
 				Tab_.elemento(i + 1, j + 1).set_set(dummy);
 			}
+
 			else if (i != 0){ //Calcula el valor máximo entre colocar o no otro elemento en caso que fuera posible colocar
+				
 				if (Tab_.elemento(i, j + 1).get_score() > problem_.elemento(i).v + Tab_.elemento(i, (j + 1 - problem_.elemento(i).w)).get_score()) {
 					Tab_.elemento(i + 1, j + 1).set_score(Tab_.elemento(i, j + 1).get_score());
 					dummy = Tab_.elemento(i, j + 1).get_set();
@@ -63,7 +68,7 @@ void DP_Method::runSearch(){
 					dummy = Tab_.elemento(i, (j + 1 - problem_.elemento(i).w)).get_set();
 					dummy.insertar(i);
 					Tab_.elemento(i + 1, j + 1).set_set(dummy);
-				//	dummy.remover(i);
+				
 				}
 			}
 		}
@@ -75,4 +80,5 @@ void DP_Method::runSearch(){
 
 	cout << bestSolution_ << endl;
 	cout << "ITERACION" << getIterationOfBestSolution() << endl;
+	cout << "Evaluado: " << problem_.evaluate(bestSolution_) << endl;
 }

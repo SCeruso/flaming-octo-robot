@@ -22,7 +22,7 @@ public:
 	int getIterationOfBestSolution();
 	double getElapsedTime();
 	double getElapsedTimeOfBestSolution();
-	StopCriterion getStopCriterion();
+	StopCriterion& getStopCriterion();
 	void setStopCriterion(StopCriterion);
 //	void setBestSolution(Solution&);
 //	void setProblem(Problem&);

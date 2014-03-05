@@ -136,3 +136,28 @@ bool Bit_set::estado(int i) {
 size_t Bit_set::get_size() {
 	return size_;
 }
+
+void cruzar(Bit_set& p1, Bit_set& p2, int point) {
+	int i = 0;
+	Bit_set dummy1;
+	Bit_set dummy2;
+
+	dummy1.resize(p1.get_size());
+	dummy2.resize(p1.get_size());
+
+	for (i = 0; i <= point; i++) {
+		if (p1.estado(i))
+			dummy1.insertar(i);
+		if (p2.estado(i))
+			dummy2.insertar(i);
+	}
+
+	for (; i < p1.get_size(); i++) {
+		if (p1.estado(i))
+			dummy2.insertar(i);
+		if (p2.estado(i))
+			dummy1.insertar(i);
+	}
+	p1 = dummy1;
+	p2 = dummy2;
+}

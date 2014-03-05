@@ -19,7 +19,7 @@ double SolutionMethod::getElapsedTime() { return elapsedTime_; }
 
 double SolutionMethod::getElapsedTimeOfBestSolution() { return elapsedTimeOfBestSolution_; }
 
-StopCriterion SolutionMethod::getStopCriterion() { return stopCriterion_; }
+StopCriterion& SolutionMethod::getStopCriterion() { return stopCriterion_; }
 
 void SolutionMethod::setStopCriterion(StopCriterion criterion) { stopCriterion_ = criterion; }
 
