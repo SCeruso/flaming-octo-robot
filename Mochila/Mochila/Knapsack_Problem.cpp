@@ -24,7 +24,7 @@ double Knapsack_Problem::evaluate(Knapsack_Solution& solution) {
 		}
 	}
 	if (c > Cap_)
-		x = 0;
+		x = x/(c-Cap_);					
 	solution.set_score(x);
 	return x;
 }

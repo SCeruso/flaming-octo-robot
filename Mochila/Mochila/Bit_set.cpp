@@ -161,3 +161,19 @@ void cruzar(Bit_set& p1, Bit_set& p2, int point) {
 	p1 = dummy1;
 	p2 = dummy2;
 }
+
+void Bit_set::mutar(double p) {
+
+	default_random_engine gen;
+	bernoulli_distribution dis(p);
+
+	for (int i = 0; i < size_; i++){
+		if (dis(gen)) {
+			if (estado(i))
+				remover(i);
+			else
+				insertar(i);
+		}
+	}
+
+}

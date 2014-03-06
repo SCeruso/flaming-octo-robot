@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <random>
 
 using namespace std;
 
@@ -24,6 +25,7 @@ public:
 	int cardinal(void);
 	bool estado(int i);//true si "i" contenido en block_
 	size_t get_size();
+	void mutar(double);
 	friend void cruzar(Bit_set&, Bit_set&, int);
 };
 

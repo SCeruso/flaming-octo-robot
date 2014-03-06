@@ -32,5 +32,8 @@ public:
 	void extend(vector<Ind_t>&);					//Extiende población
 	void simple_reduction(int);						//Reducción simple a n individuos
 	void searchAndSetBest();
+	void write();
+	void prob_reduction(int);						//Reduccion en función de su probabilidad
+	void mutar(vector<Ind_t>&);
 };
 

@@ -25,28 +25,37 @@ Knapsack_Problem AGS_Method::getProblem(){
 	return problem_;
 }
 void AGS_Method::initialize() {								
-
+	
 	int n = problem_.get_n();
 	double max_score = 0;
 	Bit_set dummy(n);
 
-	pop_.resize(n);
+	pop_.resize(2*n);
 	for (int i = 0; i < n; i++) {
 		dummy.insertar(i);
 		pop_[i].sol.set_set(dummy);
 		dummy.remover(i);
 		
 	}
-	set_prob();
+	for (int i = n; i < 2*n; i++) {
+		dummy.insertar(i-n);
+		for (int j = 0; j < i - n; j++)
+			dummy.insertar(j);
+		pop_[i].sol.set_set(dummy);
+		for (int j = 0; j < n; j++)
+				dummy.remover(j);
+	
+	}
 }
 void AGS_Method::set_prob() {
 	double max_score = 0;
-	int n = problem_.get_n();
+
+	int n = pop_.size();
 
 	for (int i = 0; i < n; i++)
 		max_score = max_score + problem_.evaluate(pop_[i].sol);
 	for (int i = 0; i < n; i++)
-		pop_[i].prob = pop_[i].sol.get_score() / max_score;
+		pop_[i].prob = pop_[i].sol.get_score()*100 / (max_score);
 
 	for (int i = 1; i < n; i++)
 		pop_[i].prob = pop_[i].prob + pop_[i - 1].prob;
@@ -58,6 +67,7 @@ void AGS_Method::runSearch() {
 	vector <Ind_t> parents;
 	vector <Ind_t> des;
 	setIteration(0);
+
 	initialize();
 
 	parents.resize(pop_.size());
@@ -65,29 +75,58 @@ void AGS_Method::runSearch() {
 	searchAndSetBest();
 
 	while (!parar) {
+		set_prob();
+		write();
+
+		increaseIteration();
+
+		
+
 		simple_select(parents);
 		produce(parents, des);
-		//MUTAR
+		mutar(des);
 		n = pop_.size();
 		extend(des);
-		simple_reduction(n);
+		prob_reduction(n);
 		searchAndSetBest();
 		parar = getStopCriterion().stop();
+		
 	}
-
+	cout << bestSolution_ << endl;
 }
 
 void AGS_Method::simple_select(vector<Ind_t>& parent) {
 	double x;
 	srand((time(NULL)));
+	int j;
+	bool iguales = true;
+	int n;
 
-	for (int i = 0; i < pop_.size(); i++) {					//Se puede mejorar con busqueda binaria
-		x = rand() / RAND_MAX;
-		for (int j = 0; j < pop_.size(); j++) {
+	for (int i = 0; i < pop_.size(); i++) {	//Se puede mejorar con busqueda binaria
+		iguales = true;
+
+		x = rand()*100 / (RAND_MAX);
+		for (j = 0; j < pop_.size(); j++) {
 			if (x <= pop_[j].prob) {
 				parent[i] = pop_[j];
+				break;
 			}
 		}
+		
+		while (iguales){
+			x = rand() * 100 / (RAND_MAX);
+			for (int k = 0; k < pop_.size(); k++) {
+				if (x <= pop_[k].prob && k != j) {
+					parent[i + 1] = pop_[k];
+					iguales = false;
+					break;
+				}
+				else if (x <= pop_[k].prob && k == j) {
+					break;
+				}
+			}
+		}
+		i++;
 	}
 }
 
@@ -96,10 +135,6 @@ void AGS_Method::produce(vector<Ind_t>& parent, vector<Ind_t>& des) {
 	int i = 0;
 	Knapsack_Solution d[2];
 
-	if ((parent.size() % 2) != 0){		//si es impar que quite el último elemento
-		parent.pop_back();
-		des.pop_back();
-	}
 	while (i < parent.size()) {
 		cruze_simple(parent[i].sol, parent[i + 1].sol, d);
 		des[i].sol = d[0];
@@ -114,9 +149,11 @@ void AGS_Method::cruze_simple(Knapsack_Solution& p1, Knapsack_Solution& p2, Knap
 	Bit_set des1;
 	Bit_set des2;
 
-	srand((time(NULL)));
+	
 
-	point = rand() % (l - 1);
+	point = rand() % (l);
+
+	//cout << "Punto: " << point << endl;
 
 	des1 = p1.get_set();
 	des2 = p2.get_set();
@@ -149,7 +186,7 @@ void AGS_Method::simple_reduction(int n) {
 void AGS_Method::searchAndSetBest(){
 	Knapsack_Solution aux;
 
-	for (int i = 0; i <= pop_.size(); i++) {
+	for (int i = 0; i < pop_.size(); i++) {
 		if (aux.get_score() < pop_[i].sol.get_score())
 			aux = pop_[i].sol;
 	}
@@ -159,6 +196,58 @@ void AGS_Method::searchAndSetBest(){
 	}
 	else{
 		getStopCriterion().iterationIncrease();
+	}
+
+
+}
+
+void AGS_Method::write() {
+	double max = 0;
+	cout << "---------------------------------------------------------------" << endl;
+	for (int i = 0; i < pop_.size(); i++)
+		cout << pop_[i].sol << "Prob: " << pop_[i].prob << endl;
+	for (int i = 0; i < pop_.size(); i++)
+		max = max + pop_[i].sol.get_score();
+	cout << "MAX: " << max << endl;
+	cout << "---------------------------------------------------------------" << endl;
+
+}
+
+void AGS_Method::prob_reduction(int n) {
+	vector<bool> aux(pop_.size(),false);
+	int x;
+	int z=0;
+	vector<Ind_t> dummy;
+
+	set_prob();
+	while (z < n){
+		x = rand() * 100 / (RAND_MAX);
+		for (int i = 0; i < pop_.size(); i++) {
+			if (x <= pop_[i].prob && !aux[i] && z < n) {
+				aux[i] = true;
+				z++;
+				break;
+			}
+			else if (x <= pop_[i].prob)
+				break;
+		}
+	}
+	for (int i = 0; i < pop_.size(); i++) {
+		if (aux[i])
+			dummy.push_back(pop_[i]);
+	}
+	pop_ = dummy;
+}
+
+void AGS_Method::mutar(vector<Ind_t>& des) {
+	double p = problem_.get_n();
+	p = 1 / p;
+	Bit_set dummy;
+
+	for (int i = 0; i < des.size(); i++) {
+		dummy = des[i].sol.get_set();
+		dummy.mutar(p);
+		des[i].sol.set_set(dummy);
 	}
 
 
