@@ -114,7 +114,7 @@ void TS_Method::runSearch(){
 		parar = getStopCriterion().stop();
 		cout << NowSolution_ << endl;
 	}
-	
+	cout << "Best: " << getBestSolution() << endl;
 }
 
 void TS_Method::set_holgura(int h) { holgura_ = h; }

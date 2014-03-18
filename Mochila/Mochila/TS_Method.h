@@ -12,7 +12,7 @@ private:
 	Knapsack_Problem problem_;
 	list<int> tabu_;
 	Knapsack_Solution NowSolution_;
-	int holgura_;
+	int holgura_;									//Atributo que permite exceder la capacidad máxima para encontrar una mejor solución
 public:
 	TS_Method();
 	~TS_Method();
