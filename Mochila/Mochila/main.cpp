@@ -26,6 +26,7 @@ int main(int argc, char** argv)
 		cout << problem.elemento(i).v << ", " << problem.elemento(i).w << endl;
 	metod3.setProblem(problem);
 	metod3.setTabu(2);
+	metod3.set_holgura(9);
 	metod3.runSearch();
 	system("pause");
 }

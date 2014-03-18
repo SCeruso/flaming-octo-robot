@@ -80,15 +80,16 @@ void AGS_Method::runSearch() {
 
 		increaseIteration();
 
-		
-
 		simple_select(parents);
 		produce(parents, des);
 		mutar(des);
+
 		n = pop_.size();
+
 		extend(des);
 		prob_reduction(n);
 		searchAndSetBest();
+
 		parar = getStopCriterion().stop();
 		
 	}
@@ -192,6 +193,7 @@ void AGS_Method::searchAndSetBest(){
 	}
 	if (aux.get_score() > getBestSolution().get_score()){
 		setBestSolution(aux);
+		setIterationOfBestSolution(getIteration());
 		getStopCriterion().iterationReset();
 	}
 	else{

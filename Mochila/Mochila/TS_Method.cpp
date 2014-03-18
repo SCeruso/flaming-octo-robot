@@ -3,6 +3,7 @@
 
 TS_Method::TS_Method()
 {
+	holgura_ = 0;
 	setTabu(2);
 }
 
@@ -24,7 +25,7 @@ Knapsack_Problem TS_Method::getProblem(){
 	return problem_;
 }
 void TS_Method::setTabu(int n){
-	tabu_.resize(n, -1);						//Inicializa la lista de elementos tabu a -1
+	tabu_.resize(n, -1);								//Inicializa la lista de elementos tabu a -1
 }
 int TS_Method::getTabu(){
 	return tabu_.size();
@@ -33,7 +34,7 @@ void TS_Method::initialize(){
 	Bit_set dummy(problem_.get_n());
 	Knapsack_Solution sol;
 
-	dummy.mutar(1.0 / problem_.get_n());
+	dummy.mutar(1.0 / problem_.get_n());				//Inicializa la primera solución de forma aleatoria.
 	sol.set_set(dummy);
 	problem_.evaluate(sol);
 
@@ -60,7 +61,7 @@ void TS_Method::nextSolution(){
 			dummy.insertar(i);
 			sol.set_set(dummy);
 			problem_.evaluate(sol);
-			if (sol.get_solutionWeight() <= problem_.get_Cap()) {
+			if (sol.get_solutionWeight() <= problem_.get_Cap() + holgura_) {	//Se permite sobrepasar el límite
 				quitar = false;
 				tabu_.push_front(i);
 				tabu_.pop_back();
@@ -88,8 +89,9 @@ void TS_Method::nextSolution(){
 	}
 
 	NowSolution_ = sol;
-	if (sol.get_score() > getBestSolution().get_score()){
+	if (sol.get_score() > getBestSolution().get_score() && sol.get_solutionWeight() <= problem_.get_Cap()){
 		setBestSolution(sol);
+		setIterationOfBestSolution(getIteration());
 		getStopCriterion().iterationReset();
 	}
 	else
@@ -114,3 +116,5 @@ void TS_Method::runSearch(){
 	}
 	
 }
+
+void TS_Method::set_holgura(int h) { holgura_ = h; }

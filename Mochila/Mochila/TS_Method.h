@@ -12,6 +12,7 @@ private:
 	Knapsack_Problem problem_;
 	list<int> tabu_;
 	Knapsack_Solution NowSolution_;
+	int holgura_;
 public:
 	TS_Method();
 	~TS_Method();
@@ -25,5 +26,6 @@ public:
 	void initialize();								//Inicializa la solución a un conjunto aleatorio
 	void nextSolution();
 	bool tabuItem(int);								//Identifica si un elemento está prohibido
+	void set_holgura(int);
 };
 
