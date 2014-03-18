@@ -75,6 +75,7 @@
     <ClInclude Include="Solution.h" />
     <ClInclude Include="SolutionMethod.h" />
     <ClInclude Include="StopCriterion.h" />
+    <ClInclude Include="TS_Method.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AGS_Method.cpp" />
@@ -87,6 +88,7 @@
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="SolutionMethod.cpp" />
     <ClCompile Include="StopCriterion.cpp" />
+    <ClCompile Include="TS_Method.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Mochila.rc" />

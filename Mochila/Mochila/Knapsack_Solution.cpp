@@ -1,7 +1,7 @@
 #include "Knapsack_Solution.h"
 
 
-Knapsack_Solution::Knapsack_Solution() : Solution(), set_(){}
+Knapsack_Solution::Knapsack_Solution() : Solution(), set_(), solutionWeight_(0){}
 
 
 Knapsack_Solution::~Knapsack_Solution() {}
@@ -16,6 +16,9 @@ Bit_set& Knapsack_Solution::get_set() {
 void Knapsack_Solution::set_set(Bit_set set) {
 	set_ = set;
 }
+double Knapsack_Solution::get_solutionWeight() { return solutionWeight_; }
+
+void Knapsack_Solution::set_solutionWeight(double w) { solutionWeight_ = w; }
 
 ostream& operator << (ostream& os, Knapsack_Solution sol) {
 	int i;

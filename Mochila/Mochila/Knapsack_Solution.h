@@ -7,12 +7,15 @@ class Knapsack_Solution :
 {
 private:
 	Bit_set set_;	//Conjunto solución
+	double solutionWeight_;
 public:
 	Knapsack_Solution();
 	~Knapsack_Solution();
 	bool elemento(int);
 	Bit_set& get_set();
 	void set_set(Bit_set);
+	double get_solutionWeight();
+	void set_solutionWeight(double);
 	friend ostream& operator << (ostream&, Knapsack_Solution);
 };
 
