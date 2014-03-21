@@ -22,3 +22,4 @@ int StopCriterion::get_max(){
 }
 
 void StopCriterion::iterationReset() { iteration_ = 0; }
+int StopCriterion::getIteration(){ return iteration_; }

@@ -12,6 +12,7 @@ private:
 	Knapsack_Problem problem_;
 	list<int> tabu_;
 	Knapsack_Solution NowSolution_;
+	vector<int> frec_;
 	int holgura_;									//Atributo que permite exceder la capacidad máxima para encontrar una mejor solución
 public:
 	TS_Method();
@@ -27,5 +28,6 @@ public:
 	void nextSolution();
 	bool tabuItem(int);								//Identifica si un elemento está prohibido
 	void set_holgura(int);
+	void restart();
 };
 

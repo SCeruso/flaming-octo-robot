@@ -12,5 +12,6 @@ public:
 	void set_max(int);
 	int get_max();
 	void iterationReset();
+	int getIteration();
 };
 

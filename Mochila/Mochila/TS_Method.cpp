@@ -34,6 +34,8 @@ void TS_Method::initialize(){
 	Bit_set dummy(problem_.get_n());
 	Knapsack_Solution sol;
 
+	frec_.resize(problem_.get_n(), 0);
+
 	dummy.mutar(1.0 / problem_.get_n());				//Inicializa la primera solución de forma aleatoria.
 	sol.set_set(dummy);
 	problem_.evaluate(sol);
@@ -65,6 +67,7 @@ void TS_Method::nextSolution(){
 				quitar = false;
 				tabu_.push_front(i);
 				tabu_.pop_back();
+				frec_[i]++;
 				break;
 			}
 			else {
@@ -111,6 +114,9 @@ void TS_Method::runSearch(){
 	while (!parar){
 		increaseIteration();
 		nextSolution();
+		if (getStopCriterion().getIteration() >= 10){
+			restart();
+		}
 		parar = getStopCriterion().stop();
 		cout << NowSolution_ << endl;
 	}
@@ -118,3 +124,49 @@ void TS_Method::runSearch(){
 }
 
 void TS_Method::set_holgura(int h) { holgura_ = h; }
+
+void TS_Method::restart() { 
+
+	vector<double> trial;			//Verificar que se usen correctamente los dobles
+	double x = 0.0;
+	bool llena = false;
+	Bit_set dummy;
+	Knapsack_Solution sol;
+	int sz;
+
+	sz = tabu_.size();
+	tabu_.clear();
+	tabu_.resize(sz, -1);
+	dummy.resize(problem_.get_n());
+	trial.resize(problem_.get_n(), 0);
+
+	for (int i = 0; i < problem_.get_n(); i++) {
+		x = x + frec_[i];
+	}
+	for (int i = 0; i < problem_.get_n(); i++) {
+		trial[i] = 1 - frec_[i] / x;
+	}
+	for (int i = 1; i < problem_.get_n(); i++) {
+		trial[i] = trial[i - 1] + trial[i];
+	}
+	while (!llena){
+		x = rand() / RAND_MAX;
+		for (int i = 0; i < trial.size(); i++){
+			if (x <= trial[i]){
+				dummy.insertar(i);
+				sol.set_set(dummy);
+				problem_.evaluate(sol);
+				if (sol.get_solutionWeight() <= problem_.get_Cap() + holgura_) 
+					break;
+				else {
+					dummy.remover(i);
+					sol.set_set(dummy);
+					problem_.evaluate(sol);
+				}
+			}
+			if (i == trial.size() - 1)//Verificar luego
+				llena = true;
+		}
+	}
+	NowSolution_ = sol;
+}
