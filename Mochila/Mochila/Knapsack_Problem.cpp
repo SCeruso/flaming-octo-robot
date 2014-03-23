@@ -52,3 +52,14 @@ void Knapsack_Problem::read(std::istream& is) {					//Dar valores y ordenar
 	ordenar();
 }
 
+double  Knapsack_Problem::minW(Knapsack_Solution& sol){
+	Bit_set dummy;
+	double min = 99999999999999999.9;
+	dummy = sol.get_set();
+
+	for (int i = 0; i < get_n(); i++){
+		if (!dummy.estado(i) && min > N_[i].w)
+			min = N_[i].w;
+	}
+	return min;
+}

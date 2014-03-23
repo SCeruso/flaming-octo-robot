@@ -30,6 +30,7 @@ public:
 	unsigned get_Cap();
 	N_tt elemento(int);				//Devuelve el un elemento del vector
 	void ordenar();					//Ordena según rendimiento de cada objeto
+	double minW(Knapsack_Solution&);//Devuelve el peso del elemento más ligero no insertado aún
 	void read(std::istream& is);	//Función de lectura
 	
 };

@@ -26,6 +26,7 @@ public:
 	bool estado(int i);//true si "i" contenido en block_
 	size_t get_size();
 	void mutar(double);
+	Bit_set complementario();
 	friend void cruzar(Bit_set&, Bit_set&, int);
 };
 

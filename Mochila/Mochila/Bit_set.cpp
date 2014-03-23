@@ -177,3 +177,14 @@ void Bit_set::mutar(double p) {
 	}
 
 }
+Bit_set Bit_set::complementario(){
+	Bit_set dummy;
+
+	dummy.resize(size_);
+	
+	for (int i = 0; i < size_; i++) {
+		if (!estado(i))
+			dummy.insertar(i);
+	}
+	return dummy;
+}

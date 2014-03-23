@@ -1,7 +1,7 @@
 #include "StopCriterion.h"
 
 
-StopCriterion::StopCriterion() : iteration_(0), max_(30)
+StopCriterion::StopCriterion() : iteration_(0), max_(200)
 {
 }
 

@@ -34,7 +34,7 @@ void TS_Method::initialize(){
 	Bit_set dummy(problem_.get_n());
 	Knapsack_Solution sol;
 
-	frec_.resize(problem_.get_n(), 0);
+	frec_.resize(problem_.get_n(), 1);					//Inicializa el vector de frecuencias
 
 	dummy.mutar(1.0 / problem_.get_n());				//Inicializa la primera solución de forma aleatoria.
 	sol.set_set(dummy);
@@ -109,18 +109,25 @@ bool TS_Method::tabuItem(int n) {
 }
 void TS_Method::runSearch(){
 	bool parar = false;
+	int i = 1;
+
 	initialize();
-	cout << getBestSolution() << endl;
+	//cout << getBestSolution() << endl;
+	
 	while (!parar){
 		increaseIteration();
 		nextSolution();
-		if (getStopCriterion().getIteration() >= 10){
+		if (getStopCriterion().getIteration() >= i*10){
 			restart();
+			cout << "///////////////Reiniciando solución////////////////////" << endl;
+			i++;
 		}
 		parar = getStopCriterion().stop();
 		cout << NowSolution_ << endl;
 	}
 	cout << "Best: " << getBestSolution() << endl;
+	cout << "Iteration:" << getIteration() << endl;
+	cout << "Iteration of best solution: " << getIterationOfBestSolution() << endl;
 }
 
 void TS_Method::set_holgura(int h) { holgura_ = h; }
@@ -133,7 +140,7 @@ void TS_Method::restart() {
 	Bit_set dummy;
 	Knapsack_Solution sol;
 	int sz;
-
+	
 	sz = tabu_.size();
 	tabu_.clear();
 	tabu_.resize(sz, -1);
@@ -141,16 +148,21 @@ void TS_Method::restart() {
 	trial.resize(problem_.get_n(), 0);
 
 	for (int i = 0; i < problem_.get_n(); i++) {
-		x = x + frec_[i];
+		trial[i] = ((1.0/(double)frec_[i]));
+		
 	}
 	for (int i = 0; i < problem_.get_n(); i++) {
-		trial[i] = 1 - frec_[i] / x;
+		x = x + trial[i];
+	}
+	for (int i = 0; i < problem_.get_n(); i++) {
+		trial[i] = trial[i] / x;
 	}
 	for (int i = 1; i < problem_.get_n(); i++) {
 		trial[i] = trial[i - 1] + trial[i];
 	}
+	
 	while (!llena){
-		x = rand() / RAND_MAX;
+		x = (double)rand() / (double)RAND_MAX;
 		for (int i = 0; i < trial.size(); i++){
 			if (x <= trial[i]){
 				dummy.insertar(i);
@@ -162,11 +174,15 @@ void TS_Method::restart() {
 					dummy.remover(i);
 					sol.set_set(dummy);
 					problem_.evaluate(sol);
+					break;
 				}
 			}
-			if (i == trial.size() - 1)//Verificar luego
-				llena = true;
+			
+		}
+		if (sol.get_solutionWeight() + problem_.minW(sol) > problem_.get_Cap() + holgura_) {//Verificar luego
+			llena = true;
 		}
 	}
+	
 	NowSolution_ = sol;
 }
