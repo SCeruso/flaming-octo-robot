@@ -17,5 +17,7 @@ public:
 	double get_solutionWeight();
 	void set_solutionWeight(double);
 	friend ostream& operator << (ostream&, Knapsack_Solution);
+	bool operator == (Knapsack_Solution&);
+	bool operator != (Knapsack_Solution&);
 };
 

@@ -38,3 +38,23 @@ ostream& operator << (ostream& os, Knapsack_Solution sol) {
 		os << ") score: " << sol.get_score();
 		return os;
 }
+
+bool Knapsack_Solution::operator == (Knapsack_Solution& sol) {
+	
+	if (get_score() != sol.get_score())
+		return false;
+	if (solutionWeight_ != sol.get_solutionWeight())
+		return false;
+	if (set_ != sol.get_set())
+		return false;
+	return true;
+}
+bool Knapsack_Solution::operator != (Knapsack_Solution& sol){
+	if (get_score() == sol.get_score())
+		return false;
+	if (solutionWeight_ == sol.get_solutionWeight())
+		return false;
+	if (set_ == sol.get_set())
+		return false;
+	return true;
+}

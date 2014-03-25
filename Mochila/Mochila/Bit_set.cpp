@@ -188,3 +188,24 @@ Bit_set Bit_set::complementario(){
 	}
 	return dummy;
 }
+
+bool Bit_set::operator == (Bit_set& set){
+
+	if (size_ != set.get_size())
+		return false;
+	for (int i = 0; i < size_; i++){
+		if (estado(i) != set.estado(i))
+			return false;
+	}
+	return true;
+}
+bool Bit_set:: operator != (Bit_set& set){
+	
+	if (size_ == set.get_size())
+		return false;
+	for (int i = 0; i < size_; i++){
+		if (estado(i) == set.estado(i))
+			return false;
+	}
+	return true;
+}

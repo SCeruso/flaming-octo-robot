@@ -28,5 +28,7 @@ public:
 	void mutar(double);
 	Bit_set complementario();
 	friend void cruzar(Bit_set&, Bit_set&, int);
+	bool operator == (Bit_set&);
+	bool operator != (Bit_set&);
 };
 
