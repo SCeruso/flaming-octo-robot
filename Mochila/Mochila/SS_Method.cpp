@@ -75,9 +75,21 @@ void SS_Method::initialize(){			//PROBAR CONJUNTO INICIAL!!
 		problem_.evaluate(sol);
 		i++;
 	}
-
 	mejorar();
 	updateRefSet();
+	searchAndSetBest();
+	/*
+	//____________________________________________________________________________
+	for (int i = 0; i < pool_.size(); i++)
+		cout << pool_[i] << endl;
+	
+	cout << "____________________________________________________" << endl;
+	for (int i = 0; i < pool_.size(); i++)
+		cout << pool_[i] << endl;
+	
+	cout << "____________________________________________________" << endl;
+	for (int i = 0; i < RefSet_.size(); i++)
+		cout << RefSet_[i] << endl;*/
 }
 
 void SS_Method::generar(Knapsack_Solution& sol, int i){
@@ -120,7 +132,7 @@ void SS_Method::shiftSol(Knapsack_Solution& sol, int n){
 	sol.set_set(dummy);
 }
 
-void SS_Method::mejorar() {//Probar
+void SS_Method::mejorar() {//Probar FUNCIONA
 	int j = 0;
 	Bit_set dummy;
 
@@ -146,7 +158,7 @@ void SS_Method::mejorar() {//Probar
 	}
 }
 
-int SS_Method::distancia(Knapsack_Solution& sol1, Knapsack_Solution& sol2){//Probar
+int SS_Method::distancia(Knapsack_Solution& sol1, Knapsack_Solution& sol2){//Probar FUNCIONA
 	int dis = 0;
 	Bit_set aux1, aux2;
 
@@ -160,7 +172,7 @@ int SS_Method::distancia(Knapsack_Solution& sol1, Knapsack_Solution& sol2){//Pro
 
 	return dis;
 }
-void SS_Method::combinar(Knapsack_Solution& sol1, Knapsack_Solution& sol2, Knapsack_Solution& res){	//Probar
+void SS_Method::combinar(Knapsack_Solution& sol1, Knapsack_Solution& sol2, Knapsack_Solution& res){	//Probar FUNCIONA
 	default_random_engine gen;
 	double p = sol1.get_score() / (sol1.get_score() + sol2.get_score());
 	bernoulli_distribution dis(p);
@@ -187,9 +199,10 @@ void SS_Method::combinar(Knapsack_Solution& sol1, Knapsack_Solution& sol2, Knaps
 	}
 	res.set_set(dummy);
 	problem_.evaluate(res);
+
 }
 
-void SS_Method::updateRefSet(){				//PRobar todo esto
+void SS_Method::updateRefSet(){				//PRobar todo esto Funciona
 
 	vector<Knapsack_Solution> aux;
 	vector<bool> poolused;
@@ -204,7 +217,7 @@ void SS_Method::updateRefSet(){				//PRobar todo esto
 	int mindis = 9999;
 	int maxdis = -1;
 
-	dis.resize(pool_.size(), 0);
+	dis.resize(pool_.size(), 9999);
 	dummy.resize(problem_.get_Cap());
 	best.set_set(dummy);
 	problem_.evaluate(best);
@@ -215,14 +228,14 @@ void SS_Method::updateRefSet(){				//PRobar todo esto
 
 	for (int k = 0; k <5; k++){
 		for (int i = 0; i < pool_.size(); i++) {
-			if ((pool_[i].get_score > best.get_score()) && !poolused[i]) {
+			if ((pool_[i].get_score() > best.get_score()) && !poolused[i]) {
 				poolind = i;
 				rind = -1;
 				best = pool_[i];
 			}
 		}
 		for (int i = 0; i < RefSet_.size(); i++) {
-			if ((RefSet_[i].get_score > best.get_score()) && !refUsed[i]) {
+			if ((RefSet_[i].get_score() > best.get_score()) && !refUsed[i]) {
 				rind = i;
 				poolind = -1;
 				best = RefSet_[i];
@@ -245,13 +258,14 @@ void SS_Method::updateRefSet(){				//PRobar todo esto
 
 	for (int k = 0; k < pool_.size(); k++){
 		for (int j = 0; j < 5; j++){
-			if (distancia(pool_[k], RefSet_[j]) < mindis) {
-				mindis = distancia(pool_[k], RefSet_[j]);
+			if (distancia(pool_[k], aux[j]) < mindis) {
+				mindis = distancia(pool_[k], aux[j]);
 			}
 		}
 		dis[k] = mindis;
 		mindis = 99999;
 	}
+
 	for (int k = 5; k < 10; k++){
 		for (int i = 0; i < dis.size(); i++) {
 			if ((dis[i] > maxdis) && !disused[i]) {
@@ -261,6 +275,8 @@ void SS_Method::updateRefSet(){				//PRobar todo esto
 		}
 		aux[k] = pool_[disind];
 		disused[disind] = true;
+		disind = -1;
+		maxdis = -1;
 	}
 
 
@@ -280,5 +296,40 @@ void SS_Method::generatePool(){				//Demasiado facil para funcionar :D
 	pool_ = newpool;
 }
 void SS_Method::runSearch(){
+	bool parar = false;
+
+	getStopCriterion().set_max(30);
+	initialize();
+
+	while (!parar){
+		increaseIteration();
+		generatePool();
+		mejorar();
+		updateRefSet();
+		searchAndSetBest();
+		parar = getStopCriterion().stop();
+	}
+
+	cout << "Best: " << getBestSolution() << endl;
+	cout << "Iteration of best: " << getIterationOfBestSolution() << endl;
+
+}
+
+void SS_Method::searchAndSetBest(){
+	Knapsack_Solution aux;
+
+	for (int i = 0; i < RefSet_.size(); i++) {
+		if (aux.get_score() < RefSet_[i].get_score())
+			aux = RefSet_[i];
+	}
+	if (aux.get_score() > getBestSolution().get_score()){
+		setBestSolution(aux);
+		setIterationOfBestSolution(getIteration());
+		getStopCriterion().iterationReset();
+	}
+	else{
+		getStopCriterion().iterationIncrease();
+	}
+
 
 }

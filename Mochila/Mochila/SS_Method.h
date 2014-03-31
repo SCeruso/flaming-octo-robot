@@ -21,11 +21,12 @@ public:
 	void initialize();
 	void runSearch();
 	void generatePool();
-	void combinar(Knapsack_Solution&, Knapsack_Solution&, Knapsack_Solution&);
-	void mejorar();
-	void updateRefSet();
-	int distancia(Knapsack_Solution&, Knapsack_Solution&);
+	void combinar(Knapsack_Solution&, Knapsack_Solution&, Knapsack_Solution&);//PROBADO
+	void mejorar();															//FUNCIONA
+	void updateRefSet();													//Funciona
+	int distancia(Knapsack_Solution&, Knapsack_Solution&);					//PROBADO
 	void generar(Knapsack_Solution&, int);									//Genera una solucion
 	void shiftSol(Knapsack_Solution&, int);										//Modifica una solucion
+	void searchAndSetBest();
 };
 
