@@ -5,6 +5,8 @@
 #include "TS_Method.h"
 #include "SS_Method.h"
 #include <math.h>
+#include <fstream>
+
 // Resolución del problema de la mochila 0-1
 
 
@@ -17,9 +19,12 @@ int main(int argc, char** argv)
 	Knapsack_Solution sol1, sol2, r;
 	Bit_set dummy;
 
-	problem.read(cin);
+	ifstream is(argv[1]);
+
+	problem.read(is);
 	metod.setProblem(problem);
 	metod.runSearch();
+	
 	/*
 	AGS_Method metod2;
 
@@ -29,8 +34,8 @@ int main(int argc, char** argv)
 //	for (int i = 0; i < problem.get_n(); i++)
 	//	cout << problem.elemento(i).v << ", " << problem.elemento(i).w << endl;
 	metod3.setProblem(problem);
-	metod3.setTabu(2);
-	metod3.set_holgura(9);
+	metod3.setTabu(4);
+	metod3.set_holgura(50);
 	metod3.runSearch();
 
 	metod4.setProblem(problem);
@@ -39,5 +44,8 @@ int main(int argc, char** argv)
 	metod4.initialize();
 
 	metod4.runSearch();
+
+	is.close();
 	system("pause");
 }
+

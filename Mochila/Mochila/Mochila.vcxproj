@@ -66,7 +66,9 @@
   <ItemGroup>
     <ClInclude Include="AGS_Method.h" />
     <ClInclude Include="Bit_set.h" />
+    <ClInclude Include="Celda.h" />
     <ClInclude Include="DP_Method.h" />
+    <ClInclude Include="h_lineal.h" />
     <ClInclude Include="Knapsack_Problem.h" />
     <ClInclude Include="Knapsack_Solution.h" />
     <ClInclude Include="Matrix.h" />
@@ -77,11 +79,14 @@
     <ClInclude Include="SS_Method.h" />
     <ClInclude Include="StopCriterion.h" />
     <ClInclude Include="TS_Method.h" />
+    <ClInclude Include="T_hash.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AGS_Method.cpp" />
     <ClCompile Include="Bit_set.cpp" />
+    <ClCompile Include="Celda.cpp" />
     <ClCompile Include="DP_Method.cpp" />
+    <ClCompile Include="h_lineal.cpp" />
     <ClCompile Include="Knapsack_Problem.cpp" />
     <ClCompile Include="Knapsack_Solution.cpp" />
     <ClCompile Include="main.cpp" />
@@ -91,6 +96,7 @@
     <ClCompile Include="SS_Method.cpp" />
     <ClCompile Include="StopCriterion.cpp" />
     <ClCompile Include="TS_Method.cpp" />
+    <ClCompile Include="T_hash.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Mochila.rc" />

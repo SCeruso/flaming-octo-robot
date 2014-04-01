@@ -67,7 +67,7 @@ void TS_Method::nextSolution(){
 				quitar = false;
 				tabu_.push_front(i);
 				tabu_.pop_back();
-				frec_[i]++;
+	//			frec_[i]++;											//Para que solo cuenten inserciones
 				break;
 			}
 			else {
@@ -92,6 +92,13 @@ void TS_Method::nextSolution(){
 	}
 
 	NowSolution_ = sol;
+	//////Aumentar frecuencias de todos los elementos presentes////////////////////////
+	dummy = sol.get_set();
+	for (int i = 0; i< problem_.get_n(); i++){
+		if (dummy.estado(i))
+			frec_[i]++;
+	}
+	/////////////////////////////////////////////////////////////////////////
 	if (sol.get_score() > getBestSolution().get_score() && sol.get_solutionWeight() <= problem_.get_Cap()){
 		setBestSolution(sol);
 		setIterationOfBestSolution(getIteration());
@@ -119,11 +126,12 @@ void TS_Method::runSearch(){
 		nextSolution();
 		if (getStopCriterion().getIteration() >= i*10){
 			restart();
-			cout << "///////////////Reiniciando solución////////////////////" << endl;
+			//cout << "///////////////Reiniciando solución////////////////////" << endl;
+			//cout << NowSolution_ << endl;
 			i++;
 		}
 		parar = getStopCriterion().stop();
-		cout << NowSolution_ << endl;
+		
 	}
 	cout << "Best: " << getBestSolution() << endl;
 	cout << "Iteration:" << getIteration() << endl;
@@ -163,6 +171,7 @@ void TS_Method::restart() {
 	
 	while (!llena){
 		x = (double)rand() / (double)RAND_MAX;
+		//cout << x << ", ";//**********
 		for (int i = 0; i < trial.size(); i++){
 			if (x <= trial[i]){
 				dummy.insertar(i);
@@ -183,6 +192,18 @@ void TS_Method::restart() {
 			llena = true;
 		}
 	}
-	
+	/////////////////////////////////
+	//cout << endl;
+	/*for (int i = 0; i < problem_.get_n(); i++){
+		cout << frec_[i] << ", ";
+	}
+	cout << endl;*/
+	//////////////////////////////////
+	/*/////////////////////////////////
+	for (int i = 0; i < problem_.get_n(); i++){
+		cout << trial[i] << ", ";
+	}
+	cout << endl;
+	//////////////////////////////////*/
 	NowSolution_ = sol;
 }
