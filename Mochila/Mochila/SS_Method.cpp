@@ -205,53 +205,60 @@ void SS_Method::combinar(Knapsack_Solution& sol1, Knapsack_Solution& sol2, Knaps
 void SS_Method::updateRefSet(){				//PRobar todo esto Funciona
 
 	vector<Knapsack_Solution> aux;
+	vector<Knapsack_Solution> aux2;
 	vector<bool> poolused;
 	vector<bool> disused;
-	vector<bool> refUsed;
 	vector<int> dis;
 	Knapsack_Solution best;
 	Bit_set dummy;
-	int rind = -1; 
+	T_hash* hash;
 	int disind = -1;
 	int poolind = -1;
 	int mindis = 9999;
 	int maxdis = -1;
 
-	dis.resize(pool_.size(), 9999);
 	dummy.resize(problem_.get_Cap());
 	best.set_set(dummy);
 	problem_.evaluate(best);
 	poolused.resize(pool_.size(), false);
-	refUsed.resize(RefSet_.size(), false);
 	disused.resize(pool_.size(), false);
 	aux.resize(10);
 
+	hash = new h_lineal(33, 3);
+
+	////////////////////////////////////////////////////////
+
+	for (int i = 0; i < RefSet_.size(); i++)			//Unir refset con pool
+		pool_.push_back(RefSet_[i]);
+
+	for (int i = 0; i < pool_.size(); i++){
+		if (!hash->buscar(pool_[i])){
+			hash->insertar(pool_[i]);
+			aux2.push_back(pool_[i]);
+		}
+	}
+
+	pool_ = aux2;
+	aux2.clear();
+	dis.resize(pool_.size(), 9999);
+	/*cout << "//////////////////////////////////" << endl;
+	for (int i = 0; i < pool_.size(); i++)
+		cout << pool_[i] << endl;*/
+
+	/////////////////////////////////////////////////////
 	for (int k = 0; k <5; k++){
 		for (int i = 0; i < pool_.size(); i++) {
 			if ((pool_[i].get_score() > best.get_score()) && !poolused[i]) {
 				poolind = i;
-				rind = -1;
 				best = pool_[i];
-			}
-		}
-		for (int i = 0; i < RefSet_.size(); i++) {
-			if ((RefSet_[i].get_score() > best.get_score()) && !refUsed[i]) {
-				rind = i;
-				poolind = -1;
-				best = RefSet_[i];
 			}
 		}
 		problem_.evaluate(best);
 		aux[k] = best;
 		
-		if (rind != -1) {
-			refUsed[rind] = true;
-			rind = -1;
-		}
-		if (poolind != -1) {
-			poolused[poolind] = true;
-			poolind = -1;
-		}
+		poolused[poolind] = true;
+		poolind = -1;
+		
 		best.set_set(dummy);
 		problem_.evaluate(best);
 	}
@@ -300,9 +307,10 @@ void SS_Method::runSearch(){
 
 	getStopCriterion().set_max(30);
 	initialize();
-
+	cout << getBestSolution() << endl;//************************
 	while (!parar){
 		increaseIteration();
+		
 		generatePool();
 		mejorar();
 		updateRefSet();

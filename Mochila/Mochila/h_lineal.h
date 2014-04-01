@@ -6,6 +6,6 @@ class h_lineal :
 public:
 	h_lineal(int, int);
 	~h_lineal();
-	int explorar(int, int);
+	int explorar(int, Knapsack_Solution&);
 };
 

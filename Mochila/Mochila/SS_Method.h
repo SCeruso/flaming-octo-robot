@@ -2,7 +2,7 @@
 #include "SolutionMethod.h"
 #include "Knapsack_Problem.h"
 #include "Knapsack_Solution.h"
-
+#include "h_lineal.h"
 
 class SS_Method :
 	public SolutionMethod

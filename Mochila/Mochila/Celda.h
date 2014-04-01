@@ -1,16 +1,16 @@
 #pragma once
-#pragma once
+#include "Knapsack_Solution.h"
 #include <vector>
 using namespace std;
 
 class Celda
 {
 private:
-	vector<int> cell_;
+	vector<Knapsack_Solution> cell_;
 public:
 	Celda();
 	~Celda();
-	int& block(int);
+	Knapsack_Solution& block(int);
 	int get_size();
 	void set_size(int);
 };

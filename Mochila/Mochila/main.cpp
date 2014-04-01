@@ -24,18 +24,16 @@ int main(int argc, char** argv)
 	problem.read(is);
 	metod.setProblem(problem);
 	metod.runSearch();
-	
-	/*
-	AGS_Method metod2;
 
 	
-	metod2.setProblem(problem);
-	metod2.runSearch();*/
+	//AGS_Method metod2;
+	//metod2.setProblem(problem);
+	//metod2.runSearch();
 //	for (int i = 0; i < problem.get_n(); i++)
 	//	cout << problem.elemento(i).v << ", " << problem.elemento(i).w << endl;
 	metod3.setProblem(problem);
-	metod3.setTabu(4);
-	metod3.set_holgura(50);
+	metod3.setTabu(3);
+	metod3.set_holgura(9);
 	metod3.runSearch();
 
 	metod4.setProblem(problem);
@@ -46,6 +44,10 @@ int main(int argc, char** argv)
 	metod4.runSearch();
 
 	is.close();
+
+
+
+
 	system("pause");
 }
 
